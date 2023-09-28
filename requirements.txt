@@ -1,0 +1,11 @@
+numpy==1.24.2
+h5py
+ipython
+lightning
+nibabel
+pynvim
+scikit-learn
+tensorboard
+torchio
+torch-tb-profiler
+
