@@ -1,1 +1,1 @@
-sudo docker build -t pytorch-gpu . -f Dockerfile
+sudo docker build -t cpu . -f Dockerfile

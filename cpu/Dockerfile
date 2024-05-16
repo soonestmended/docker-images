@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.3.1-devel-ubuntu20.04
+FROM ubuntu:latest
 
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
@@ -8,6 +8,9 @@ ENV TERM xterm-256color
 RUN apt-get update && \
     apt-get install -y \
         git \
+		lazygit \
+		neovim \
+		ripgrep \
 		python3 \
         python3-pip \
 		python3-venv \
@@ -21,12 +24,8 @@ RUN apt-get update && \
 		unzip \
 		ssh
 
-COPY nvim.appimage nvim.appimage
-RUN chmod u+x nvim.appimage
-RUN ./nvim.appimage --appimage-extract
-RUN ln -s /squashfs-root/AppRun /usr/bin/nvim
+
 RUN git clone https://github.com/LazyVim/starter ~/.config/nvim
-RUN rm -rf ~/.config/nvim/.git
 COPY tmux.conf /root/.tmux.conf
 
 RUN mkdir /var/run/sshd
