@@ -53,5 +53,8 @@ RUN echo 'export PS1="{\[\e[32m\]\u\[\e[m\]@\[\e[36m\]docker\[\e[m\]:\w_\$?}$ "'
 RUN echo "alias tmux='tmux -u'" >> /root/.bash_profile
 RUN echo "alias l='ls --color=auto'" >> /root/.bash_profile
 RUN echo "alias ls='ls --color=auto'" >> /root/.bash_profile
-CMD ["/usr/sbin/sshd", "-D"]
-# CMD ["bash", "-l"]
+
+RUN service ssh start
+RUN curl -fsSL https://tailscale.com/install.sh | sh
+COPY start_tailscale.sh start_tailscale.sh
+CMD start_tailscale.sh && bash -l

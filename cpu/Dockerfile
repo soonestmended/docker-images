@@ -8,13 +8,9 @@ ENV TERM xterm-256color
 RUN apt-get update && \
     apt-get install -y \
         git \
-		lazygit \
 		neovim \
 		ripgrep \
-		python3 \
-        python3-pip \
-		python3-venv \
-        python3-dev \
+		python3-full \
         python3-opencv \
         libglib2.0-0 \
 		curl \
@@ -38,8 +34,10 @@ WORKDIR /root
 # Upgrade pip
 # Install any python packages you need
 COPY requirements.txt requirements.txt
-RUN python3 -m pip install --user --upgrade pip
-RUN python3 -m pip install -r requirements.txt
+
+RUN python3 -m venv /root/cpu-venv
+RUN /root/cpu-venv/bin/python3 -m pip install --upgrade pip
+RUN /root/cpu-venv/bin/python3 -m pip install -r requirements.txt
 
 # install current nodejs
 RUN mkdir -p /etc/apt/keyrings
@@ -52,5 +50,4 @@ RUN echo 'export PS1="{\[\e[32m\]\u\[\e[m\]@\[\e[36m\]docker\[\e[m\]:\w_\$?}$ "'
 RUN echo "alias tmux='tmux -u'" >> /root/.bash_profile
 RUN echo "alias l='ls --color=auto'" >> /root/.bash_profile
 RUN echo "alias ls='ls --color=auto'" >> /root/.bash_profile
-CMD ["/usr/sbin/sshd", "-D"]
 # CMD ["bash", "-l"]

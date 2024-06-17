@@ -1,0 +1,40 @@
+---
+services:
+  pytorch-gpu:
+    image: pytorch-gpu
+    hostname: pytorch-gpu
+    environment:
+        - TS_AUTHKEY=tskey-auth-krSyuCEut311CNTRL-x9xxGpGP2eBW9NiameCpdBezrNmzkGbL
+        - TS_EXTRA_ARGS=--advertise-tags=tag:container
+        - TS_STATE_DIR=/var/lib/tailscale
+        - TS_USERSPACE=false
+    volumes:
+        - tailscale-data:/var/lib/tailscale
+        - /dev/net/tun:/dev/net/tun
+        - pytorch-data:/data
+        - pytorch-home:/home
+        - /c/ptgpu:/ptgpu
+    cap_add:
+        - net_admin
+        - sys_module
+    ports:
+        - "14076:22"
+    shm_size: 16gb
+    restart: unless-stopped
+    deploy:
+        resources:
+            reservations:
+                devices:
+                    - driver: nvidia
+                      count: "all"
+                      capabilities: [gpu]
+    stdin_open: true
+    tty: true
+    command: sh start_tailscale.sh && /bin/bash
+volumes:
+    pytorch-data:
+        external: true
+    pytorch-home:
+        external: true
+    tailscale-data: 
+        external: true
