@@ -11,3 +11,4 @@ scikit-learn
 tensorboard
 torchio
 torch-tb-profiler
+protobuf==4.*
